@@ -1,21 +1,21 @@
-import useDominantSpeaker from './room/useDominantSpeaker'
-import useParticipant from './room/useParticipant'
-import useRoomConnection from './room/useRoomConnection'
-import useToggleCamera from './room/useToggleCamera'
-import useToggleMicrophone from './room/useToggleMicrophone'
+import useDominantSpeaker from "./room/useDominantSpeaker";
+import useParticipant from "./room/useParticipant";
+import useRoomConnection from "./room/useRoomConnection";
+import useToggleCamera from "./room/useToggleCamera";
+import useToggleMicrophone from "./room/useToggleMicrophone";
 
-export default function useRoom () {
-  const { room, error, connectRoom, disconnectRoom } = useRoomConnection()
-  const { localParticipant, remoteParticipants } = useParticipant({ room })
-  const { dominantSpeaker } = useDominantSpeaker({ room })
+export default function useRoom({ enableAudio, enableVideo }) {
+  const { room, error, connectRoom, disconnectRoom } = useRoomConnection();
+  const { localParticipant, remoteParticipants } = useParticipant({ room });
+  const { dominantSpeaker } = useDominantSpeaker({ room });
   const { isCameraOn, toggleCamera } = useToggleCamera({
     room,
-    initialState: true
-  })
+    initialState: enableVideo,
+  });
   const { isMicrophoneOn, toggleMicrophone } = useToggleMicrophone({
     room,
-    initialState: true
-  })
+    initialState: enableAudio,
+  });
 
   return {
     room,
@@ -28,6 +28,6 @@ export default function useRoom () {
     isCameraOn,
     toggleCamera,
     isMicrophoneOn,
-    toggleMicrophone
-  }
+    toggleMicrophone,
+  };
 }
